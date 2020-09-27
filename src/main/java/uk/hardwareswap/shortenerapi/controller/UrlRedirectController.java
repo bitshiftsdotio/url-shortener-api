@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,19 +28,23 @@ public class UrlRedirectController {
     @GetMapping("/{urlId}")
     @ApiOperation(value = "Redirect to the URL referenced by the given urlId.")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
+        @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 404, message = "Not Found - a link with the given URL ID does not exist.", response = Void.class)
     })
     public ResponseEntity<Void> redirect(@PathVariable String urlId) {
 
         log.info("Redirecting for URL with ID {}", urlId);
 
+        String url;
+
         try {
-            urlRedirectService.getUrlById(urlId);
+            url = urlRedirectService.getUrlById(urlId);
         } catch (UrlEntryNotFoundException ignored) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.LOCATION, url);
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 }
