@@ -11,29 +11,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.hardwareswap.shortenerapi.exception.UrlEntryNotFoundException;
 import uk.hardwareswap.shortenerapi.service.UrlRedirectService;
 
 @Slf4j
 @RestController
-@RequestMapping("/")
 @RequiredArgsConstructor
 @Api(hidden = true)
 public class UrlRedirectController {
 
     private final UrlRedirectService urlRedirectService;
 
-    @GetMapping("/{urlId}")
+    @GetMapping("/u/{urlId}")
     @ApiOperation(value = "Redirect to the URL referenced by the given urlId.")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
-        @ApiResponse(code = 404, message = "Not Found - a link with the given URL ID does not exist.", response = Void.class)
+        @ApiResponse(code = 404, message = "Not Found - a link with the given URL ID does not exist.")
     })
     public ResponseEntity<Void> redirect(@PathVariable String urlId) {
-
-        log.info("Redirecting for URL with ID {}", urlId);
 
         String url;
 

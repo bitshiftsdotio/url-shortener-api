@@ -31,8 +31,6 @@ public class UrlIdGeneratorStrategy implements IdentifierGenerator {
                 rs = statement.executeQuery("select * from url_redirect_data where url_id = '" + id + "'");
             } while (rs.next());
 
-
-
             return id;
         } catch (SQLException ex) {
             log.error("An SQL error occurred while generating a new URL ID: {}", ex.getMessage());

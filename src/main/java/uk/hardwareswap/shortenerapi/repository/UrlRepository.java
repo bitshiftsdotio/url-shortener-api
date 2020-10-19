@@ -6,4 +6,6 @@ import uk.hardwareswap.shortenerapi.model.UrlRedirectData;
 
 @Repository
 public interface UrlRepository extends JpaRepository<UrlRedirectData, String> {
+
+    UrlRedirectData findByOriginalUrl(String url);
 }
